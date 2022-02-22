@@ -1,7 +1,20 @@
-git add .
+git init #创建git项目
 
-git commit 
+git add .  #添加到暂存区
 
-git push url
+git commit -m "第二次更新"  #添加到本地仓库
 
-git clone url
+git status  #刷新暂存区状态
+
+git push url   
+
+git push -u origin **** #将本地和远程关联 
+
+git clone url  
+
+git branch #列出分支
+
+git branch ***  #创建分支
+
+git branch -vv #查看本地仓库和远程仓库的关联情况
+
