@@ -1,20 +1,99 @@
-git init #创建git项目
+Git
 
-git add .  #添加到暂存区
+git fetch 是git pull 的细分步骤，git pull 包含了git fetch 
+git pull origin master
+上述命令其实相当于git fetch + git merge
+在实际使用中，git fetch更安全一些
+因为在merge前，我们可以查看更新情况，然后再决定是否合并
 
-git commit -m "第二次更新"  #添加到本地仓库
+git clone  git pull 区别：
+git clone 直接把整个项目下载下来，里面包括项目.git 文件，会搞出来两个.git文件；而git pull 需要 git remote add 之后才可以 只有一个.git文件。
 
-git status  #刷新暂存区状态
+git fetch 实战用途：用于获取远程仓库各个分支的提交信息，但不会主动合并到工作区
+git fetch origin 下载远程仓库所有分支的提交
+git fetch origin + 分支名字 只同步某个分支的提交
+git merge origin/分支名 在当前分支合并特定远程远程分支的提交
 
-git push url   
+git branch 查看本地分支
+git branch -r 查看远程仓库
+git branch -a 查看所有仓库
+删除本地远程仓库信息
+git branch -r -d + origin/仓库名字
 
-git push -u origin **** #将本地和远程关联 
 
-git clone url  
+切换分支 git checkout + 分支名字
+创建分支 git checkout -b + 分支名字
+删除本地分支 git branch -d + 分支名字
+git fetch 没merge前强制删除：git branch -D + 分支名字
+删除远程分支 git push origin --delete + 分支名字
 
-git branch #列出分支
+git配置远程仓库：
+git remote -v 查看当前仓库有没有匹配远程仓库
+git remote add 远程仓库别名(一般第一个常取用origin) SSH协议地址
+例子：git remote add origin git@192.168.1.27:Android/A600.git
+ git remote rm 远程仓库别名
 
-git branch ***  #创建分支
+ssh密钥生成命令：
 
-git branch -vv #查看本地仓库和远程仓库的关联情况
+
+git log 命令是针对一个分支，或者只有连续相等commit信息的不同分支使用， 用处是根据tag 拉分支，不管是从高往低打tag，还是从低往高打tag都行。
+这句话很抽象，是高度总结。
+git log --pretty==oneline  每个提交只打印一行
+git log --oneline  在上一个命令的基础上，hash值只显示一部分
+git log --graph --all  查看所有分支演进图  
+git log --graph  查看当前分支演进图
+git fetch + git log --graph --all 可以查看整个
+
+git tag 用于 标记一些 重要节点版本，以便于在重要版本上进行二次开发。
+git tag : 直接列出所有的标签
+git tag -l xxxx : 可以根据 xxxx 进行标签的筛选
+git show 标签名 ： 查看标签的信息，（轻量标签 和 附注标签 的信息是不一样的）
+创建 轻量tag:
+git tag 标签名 ： 直接给当前的提交版本创建一个【轻量标签】
+git tag 标签名 提交版本号 ：给指定的提交版本创建一个 【轻量标签】 提交版本号指的就是提交hash值
+创建 附注tag：
+-a : 理解为 annotated 的首字符，表示 附注标签
+-m : 指定附注信息
+git tag -a 标签名称 -m 附注信息 ：直接给当前的提交版本创建一个 【附注标签】
+git tag -a 标签名称 提交版本号 -m 附注信息 ：给指定的提交版本创建一个【附注标签】
+删除tag：
+git tag -d 标签名称 : 删除指定名称的标签
+推送 tag 到远程仓库：
+默认情况下，git push 命令并不会把标签推送到远程仓库中。
+因此，我们必须 手动地将 本地的标签 推送到远程仓库中。
+git push origin 标签名称 : 将指定的标签上传到远程仓库
+git push origin --tags : 将所有不在远程仓库中的标签上传到远程仓库
+删除远程仓库上地标签同样也需要手动执行：
+$ git push origin  :regs/tags/标签名称
+or
+$ git push origin --delete 标签名称
+两个命令一样，都是删除指定的标签
+打tag的真正作用：检出标签，说人话就是，可以以一个tag点为基础版本拉出一个分支。
+git checkout -b 分支名称 标签名称
+
+git cherry-pick
+常规用法：git cherry-pick + hash值(所谓的commit id)
+在cherry-pick操作中，可能会遇到冲突。当Git无法自动解决冲突时，我们需要手动解决冲突。当冲突发生时，Git会将冲突的文件标记为“Unmerged”，我们需要在文件中手动解决冲突，并使用以下命令标记冲突已解决：
+git add <file-name>BashCopy完成冲突解决后，可以继续cherry-pick操作：
+git cherry-pick --continue
+
+
+git merge
+一般先get fetch origin ，在使用git merge +origin/分支名 选择合并哪个分支的内容
+本地merge更简单了，直接git merge + 分支名
+
+git rebase
+git merge进阶版本，使用rebase命令 git log --graph的图上不会有交叉点
+一般用法：举个例子，将 branch4分支的代码rebase到master分支上。
+git checkout branch4
+使用rebase命令把自己的commit信息复制到master分支上
+git rebase master
+git checkout master
+git merge branch4
+
+git show 
+
+git blame
+
+接冲突，都是解完然后 再 --continue
 
